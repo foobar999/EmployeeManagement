@@ -6,6 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 
 // beachte: Git greift auch hier auf ~/.gitconfig zurück!
+// siehe auch 
+// https://stackoverflow.com/questions/15381198/remove-credentials-from-git
+// Systemsteuerung\Benutzerkonten und Family Safety\Anmeldeinformationsverwaltung
 
 // TODO SQL (EntityFramework?)
 // TODO Tests
