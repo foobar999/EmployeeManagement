@@ -10,7 +10,6 @@ using System.Linq;
 // TODO SQL (EntityFramework?)
 // TODO Tests
 // TODO Swagger
-// aaa
 // TODO Fehler melden, falls ID bereits drin
 
 namespace EmployeeManagement.Controllers
