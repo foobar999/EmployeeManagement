@@ -8,6 +8,7 @@ using System.Linq;
 // beachte: Git greift auch hier auf ~/.gitconfig zurück!
 // siehe auch 
 // https://stackoverflow.com/questions/15381198/remove-credentials-from-git
+// https://stackoverflow.com/questions/5343068/is-there-a-way-to-skip-password-typing-when-using-https-on-github
 // Systemsteuerung\Benutzerkonten und Family Safety\Anmeldeinformationsverwaltung
 
 // TODO SQL (EntityFramework?)
