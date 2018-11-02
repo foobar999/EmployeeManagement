@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 
 // TODO SQL (EntityFramework?)
-// TODO (git-)Versionsverwaltung
 // TODO Tests
 // TODO Swagger
 // TODO Fehler melden, falls ID bereits drin
