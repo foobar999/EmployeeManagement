@@ -5,9 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+// beachte: Git greift auch hier auf ~/.gitconfig zurück!
+
 // TODO SQL (EntityFramework?)
 // TODO Tests
 // TODO Swagger
+// abc
 // TODO Fehler melden, falls ID bereits drin
 
 namespace EmployeeManagement.Controllers
