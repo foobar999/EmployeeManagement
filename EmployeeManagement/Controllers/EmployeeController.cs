@@ -10,6 +10,9 @@ using System.Linq;
 // https://stackoverflow.com/questions/15381198/remove-credentials-from-git
 // https://stackoverflow.com/questions/5343068/is-there-a-way-to-skip-password-typing-when-using-https-on-github
 // Systemsteuerung\Benutzerkonten und Family Safety\Anmeldeinformationsverwaltung
+// ich hab die Konfig auf das allgemeine 'helper = cache --timeout=300' gesetzt
+// wäre das Windows-spezifische 'helper = manager' ggf. sinnvoller?
+// VS scheint stets ein Token in Anmeldeinformationsverwaltung zu hinterlegen
 
 // TODO SQL (EntityFramework?)
 // TODO Tests
@@ -68,12 +71,14 @@ namespace EmployeeManagement.Controllers
         [HttpGet("{id}", Name = "GetEmployee")]
         public ActionResult<Employee> GetById(Guid id)
         {
-            var item = this.context.Employees.Find(id);
-            if (item == null)
+            var employee = this.context.Employees.Find(id);
+            if (employee == null)
             {
                 return base.NotFound();
             }
-            return item;
+            return employee;
+            // würde funktionieren
+            //return (ActionResult<Employee>)employee ?? base.NotFound();
         }
 
         [HttpPost]
