@@ -11,6 +11,7 @@
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
+      "workingDirectory": "C:\\Users\\Thomas\\VS-Projekte\\EmployeeManagement\\EmployeeManagement",
       "launchBrowser": true,
       "launchUrl": "api/employee",
       "environmentVariables": {

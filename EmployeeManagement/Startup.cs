@@ -21,7 +21,8 @@ namespace EmployeeManagement
         public void ConfigureServices(IServiceCollection services)
         {
             // einfach ne RAM-Datenbank?
-            services.AddDbContext<EmployeeContext>(opt => opt.UseInMemoryDatabase("Employees"));
+            //services.AddDbContext<EmployeeContext>(opt => opt.UseInMemoryDatabase("Employees"));
+            services.AddDbContext<EmployeeContext>(opt => opt.UseSqlite("Data Source=employees.db"));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

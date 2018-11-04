@@ -14,6 +14,9 @@ using System.Linq;
 // wäre das Windows-spezifische 'helper = manager' ggf. sinnvoller?
 // VS scheint stets ein Token in Anmeldeinformationsverwaltung zu hinterlegen
 
+// zum initialen Erstellen der SQLite-DB hab ich Migrationen benutzt
+// dazu die ersten beiden "PowerShell"-Befehle aus https://docs.microsoft.com/de-de/ef/core/managing-schemas/migrations/index
+
 // TODO SQL (EntityFramework?)
 // TODO Tests
 // TODO Swagger
