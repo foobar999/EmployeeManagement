@@ -29,10 +29,19 @@ using System.Linq;
 // - Projekt neu bauen
 // - initiale Migration erstellen
 
-// TODO SQL (EntityFramework?)
+// Seeding nach https://docs.microsoft.com/en-us/ef/core/modeling/data-seeding
+// hasData() in EmployeeContect.OnModelCreating(ModelBuilder modelBuilder)
+// - entspricht einer Migration
+// -> Anwendung neues Seedings:
+//   - Add-Migration <NAME SEED-MIGRATION>
+//   - Update-Database
+// - schiebt 1x die nötigen Daten rein -> Neustart DB sorgt *nicht* für erneutes Füllen
+// -> Neuanwendung Seeding:
+//   - Update-Database <NAME SEED-MIGRATION>
+//   - nochmal Update-Database?
+
 // TODO Tests
 // TODO Swagger
-// TODO Fehler melden, falls ID bereits drin
 
 namespace EmployeeManagement.Controllers
 {
@@ -43,38 +52,6 @@ namespace EmployeeManagement.Controllers
         public EmployeeController(EmployeeContext context)
         {
             this.context = context;
-
-            // TODO Erzeugung initialer Datensätze kicken
-            if (this.context.Employees.Count() == 0)
-            {
-                /*
-                 zum Testen (Case-Sensitiv!)
-                 - Case-Sensitiv
-                 - klappt iwie nich immer?! -> In Addon Custom <-> JSON hilft ggf.
-                {
-                 "FirstName": "Hallo",
-                 "SecondName": "Welt",
-                 "DateOfBirth": "10.10.1990"
-                }
-                 */
-                // Create a new Employee if collection is empty,
-                // which means you can't delete all Employee.
-                this.context.Employees.Add(
-                    new Employee
-                    {
-                        FirstName = "Hans",
-                        SecondName = "Wurst",
-                        DateOfBirth = new DateTime(1945, 3, 12)
-                    });
-                this.context.Employees.Add(
-                    new Employee
-                    {
-                        FirstName = "Jim",
-                        SecondName = "Beam",
-                        DateOfBirth = new DateTime(1933, 2, 11)
-                    });
-                this.context.SaveChanges();
-            }
         }
 
         [HttpGet]
