@@ -21,11 +21,13 @@ namespace EmployeeManagement.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("DateOfBirth");
+                    b.Property<DateTime?>("DateOfBirth");
 
-                    b.Property<string>("FirstName");
+                    b.Property<string>("FirstName")
+                        .IsRequired();
 
-                    b.Property<string>("SecondName");
+                    b.Property<string>("SecondName")
+                        .IsRequired();
 
                     b.HasKey("Id");
 

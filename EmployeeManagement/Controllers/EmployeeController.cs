@@ -16,6 +16,18 @@ using System.Linq;
 
 // zum initialen Erstellen der SQLite-DB hab ich Migrationen benutzt
 // dazu die ersten beiden "PowerShell"-Befehle aus https://docs.microsoft.com/de-de/ef/core/managing-schemas/migrations/index
+// initiale Migration erstellen:
+// - Add-Migration InitialCreate
+// - Update-Database
+// Schema aktualisieren:
+// - Add-Migration MeineTollenÄnderungen
+// - drübergucken, ob ok
+// - Update-Database
+// beachte: SQLite kann dies ggf. nicht ('AlterColumnOperation')
+// -> stattdessen:
+// - DB-Datei und Migration-Ordner löschen
+// - Projekt neu bauen
+// - initiale Migration erstellen
 
 // TODO SQL (EntityFramework?)
 // TODO Tests
