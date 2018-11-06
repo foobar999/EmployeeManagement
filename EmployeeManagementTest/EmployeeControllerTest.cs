@@ -23,7 +23,7 @@ namespace EmployeeManagementTest
         }
 
         [Fact]
-        public void GetById_WithEmployeeNotInDb_ShouldReturnNotFoundResultWithCorrectId()
+        public void GetById_WithEmployeeNotInDb_ShouldReturnNotFoundResultWithPassedId()
         {
             var controller = this.CreateControllerWithMultipleEmployees();
             var actionResult = controller.GetById(this.idOutsideDb);
