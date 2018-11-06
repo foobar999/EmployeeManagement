@@ -49,6 +49,8 @@ using System.Linq;
 // Unit-Tests: benutzen Mocks
 // Integrationstests: benutzen *keine* Mocks, sondern die eigentlichen Objekte
 
+// wichtig: Testen gegen OkObjectResult erfordert Rückgabe mittles Ok(obj)
+
 // TODO Tests
 // TODO Swagger
 
@@ -65,9 +67,9 @@ namespace EmployeeManagement.Controllers
 
         [HttpGet]
         [ProducesResponseType(200)]
-        public ActionResult<List<Employee>> GetAll()
+        public ActionResult<IEnumerable<Employee>> GetAll()
         {
-            return this.context.Employees.ToList();
+            return base.Ok(this.context.Employees.ToList());
         }
 
         [HttpGet("{id}", Name = "GetEmployeeById")]
@@ -80,7 +82,7 @@ namespace EmployeeManagement.Controllers
             {
                 return base.NotFound();
             }
-            return employee;
+            return base.Ok(employee);
             // würde funktionieren
             //return (ActionResult<Employee>)employee ?? base.NotFound();
         }

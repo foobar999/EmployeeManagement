@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Xunit;
 
 namespace EmployeeManagementTest
@@ -13,15 +12,11 @@ namespace EmployeeManagementTest
     {
         // https://docs.microsoft.com/de-de/aspnet/core/mvc/controllers/testing?view=aspnetcore-2.1#test-actionresultlttgt
         [Fact]
-        public void GetAll_WithMultipleEmployees_ShouldReturnCorrectEmployees()
+        public void GetAll_WithMultipleEmployees_ShouldReturnOkObjectResult()
         {
-            var controller = this.CreateFilledEmployeeController();
+            var controller = this.GetControllerWithMultipleEmployees();
             var result = controller.GetAll();
-            var actionResult = Assert.IsType<ActionResult<List<Employee>>>(result);
-            var listResult = Assert.IsType<List<Employee>>(actionResult.Value);
-            var employees = listResult;
-            var expectedEmployees = this.GetSampleEmployees();
-            Assert.Equal(employees, expectedEmployees);
+            Assert.IsType<OkObjectResult>(result.Result);
         }
 
         private EmployeeContext GetMockDbContext(List<Employee> employees)
@@ -37,7 +32,8 @@ namespace EmployeeManagementTest
         private List<Employee> GetSampleEmployees()
         {
             return new List<Employee> {
-                new Employee{
+                new Employee
+                {
                     Id = new Guid("11111111-1111-1111-1111-111111111111"),
                     FirstName = "Hans",
                     SecondName = "Wurst",
@@ -53,7 +49,7 @@ namespace EmployeeManagementTest
             };
         }
 
-        private EmployeeController CreateFilledEmployeeController()
+        private EmployeeController GetControllerWithMultipleEmployees()
         {
             return new EmployeeController(this.GetMockDbContext(this.GetSampleEmployees()));
         }

@@ -24,5 +24,10 @@ namespace EmployeeManagement.Models
                    this.SecondName == employee.SecondName &&
                    EqualityComparer<DateTime?>.Default.Equals(this.DateOfBirth, employee.DateOfBirth);
         }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(this.Id, this.FirstName, this.SecondName, this.DateOfBirth);
+        }
     }
 }
