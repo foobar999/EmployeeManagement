@@ -12,11 +12,19 @@ namespace EmployeeManagementTest
     {
         // https://docs.microsoft.com/de-de/aspnet/core/mvc/controllers/testing?view=aspnetcore-2.1#test-actionresultlttgt
         [Fact]
-        public void GetAll_WithMultipleEmployees_ShouldReturnOkObjectResult()
+        public void GetAll_WithMultipleEmployees_ShouldReturnCorrectEmployees()
         {
             var controller = this.GetControllerWithMultipleEmployees();
-            var result = controller.GetAll();
-            Assert.IsType<OkObjectResult>(result.Result);
+            var actionResult = controller.GetAll();
+            var objectResult = Assert.IsType<OkObjectResult>(actionResult.Result);
+            var employees = Assert.IsAssignableFrom<IEnumerable<Employee>>(objectResult.Value);
+            var expectedEmployees = this.GetSampleEmployees();
+            Assert.Equal(employees, expectedEmployees);
+        }
+
+        private EmployeeController GetControllerWithMultipleEmployees()
+        {
+            return new EmployeeController(this.GetMockDbContext(this.GetSampleEmployees()));
         }
 
         private EmployeeContext GetMockDbContext(List<Employee> employees)
@@ -47,11 +55,6 @@ namespace EmployeeManagementTest
                     DateOfBirth = new DateTime(1933, 2, 11)
                 }
             };
-        }
-
-        private EmployeeController GetControllerWithMultipleEmployees()
-        {
-            return new EmployeeController(this.GetMockDbContext(this.GetSampleEmployees()));
         }
     }
 }
