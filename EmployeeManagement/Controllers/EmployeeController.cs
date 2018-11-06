@@ -95,7 +95,7 @@ namespace EmployeeManagement.Controllers
             this.context.Employees.Add(employee);
             this.context.SaveChanges();
 
-            return base.CreatedAtRoute("GetById", new { id = employee.Id }, employee);
+            return base.CreatedAtAction("GetById", new { id = employee.Id }, employee);
         }
 
         [HttpDelete("{id}")]

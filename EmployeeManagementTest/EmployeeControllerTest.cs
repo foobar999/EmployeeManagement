@@ -26,10 +26,10 @@ namespace EmployeeManagementTest
         public void GetById_WithEmployeeNotInDb_ShouldReturnNotFoundResultWithPassedId()
         {
             var controller = this.CreateControllerWithMultipleEmployees();
-            var actionResult = controller.GetById(this.idOutsideDb);
-            var objectResult = Assert.IsType<NotFoundObjectResult>(actionResult.Result);
-            var id = Assert.IsType<Guid>(objectResult.Value);
-            Assert.Equal(id, this.idOutsideDb);
+            var actionResult = controller.GetById(this.otherId);
+            var noFoundResult = Assert.IsType<NotFoundObjectResult>(actionResult.Result);
+            var id = Assert.IsType<Guid>(noFoundResult.Value);
+            Assert.Equal(id, this.otherId);
         }
 
         [Fact]
@@ -43,7 +43,26 @@ namespace EmployeeManagementTest
             Assert.Equal(employee, employeeInDb);
         }
 
-        private readonly Guid idOutsideDb = new Guid("33333333-3333-3333-3333-333333333333");
+        [Fact]
+        public void Create_WithNewEmployee_ShouldReturnCreatedAtActionWithPassedEmployee()
+        {
+            var controller = this.CreateControllerWithoutEmployees();
+            var newEmployee = new Employee
+            {
+                Id = this.otherId,
+                FirstName = "Hallo",
+                SecondName = "Welt",
+                DateOfBirth = null
+            };
+            var actionResult = controller.Create(newEmployee);
+            var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(actionResult.Result);
+            Assert.Equal("GetById", createdAtActionResult.ActionName); // guter Stil?
+            Assert.Equal(this.otherId, createdAtActionResult.RouteValues["id"]); // guter Stil?
+            var employee = Assert.IsType<Employee>(createdAtActionResult.Value);
+            Assert.Equal(employee, newEmployee);
+        }
+
+        private readonly Guid otherId = new Guid("33333333-3333-3333-3333-333333333333");
 
         private readonly List<Employee> sampleEmployees = new List<Employee> {
             new Employee
