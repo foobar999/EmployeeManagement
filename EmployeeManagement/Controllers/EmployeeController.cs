@@ -72,19 +72,20 @@ namespace EmployeeManagement.Controllers
             return base.Ok(this.context.Employees.ToList());
         }
 
-        [HttpGet("{id}", Name = "GetEmployeeById")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
+        // ist es guter Stil, den Rückgabetyp zu variieren? (d.g. Guid vs. Employee)
+        // macht m$ aber auch so
+        [HttpGet("{id}", Name = "GetById")]
+        [ProducesResponseType(200, Type = typeof(Guid))]
+        [ProducesResponseType(404, Type = typeof(Employee))]
         public ActionResult<Employee> GetById(Guid id)
         {
             var employee = this.context.Employees.Find(id);
             if (employee == null)
             {
-                return base.NotFound();
+                return base.NotFound(id);
             }
             return base.Ok(employee);
-            // würde funktionieren
-            //return (ActionResult<Employee>)employee ?? base.NotFound();
+            
         }
 
         [HttpPost]
@@ -94,7 +95,7 @@ namespace EmployeeManagement.Controllers
             this.context.Employees.Add(employee);
             this.context.SaveChanges();
 
-            return base.CreatedAtRoute("GetEmployeeById", new { id = employee.Id }, employee);
+            return base.CreatedAtRoute("GetById", new { id = employee.Id }, employee);
         }
 
         [HttpDelete("{id}")]

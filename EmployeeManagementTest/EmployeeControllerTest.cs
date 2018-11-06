@@ -14,7 +14,7 @@ namespace EmployeeManagementTest
         [Fact]
         public void GetAll_WithMultipleEmployees_ShouldReturnCorrectEmployees()
         {
-            var controller = this.GetControllerWithMultipleEmployees();
+            var controller = this.CreateControllerWithMultipleEmployees();
             var actionResult = controller.GetAll();
             var objectResult = Assert.IsType<OkObjectResult>(actionResult.Result);
             var employees = Assert.IsAssignableFrom<IEnumerable<Employee>>(objectResult.Value);
@@ -22,12 +22,29 @@ namespace EmployeeManagementTest
             Assert.Equal(employees, expectedEmployees);
         }
 
-        private EmployeeController GetControllerWithMultipleEmployees()
+        [Fact]
+        public void GetById_WithEmployeeNotInContext_ShouldReturnNotFoundResult()
         {
-            return new EmployeeController(this.GetMockDbContext(this.GetSampleEmployees()));
+            var controller = this.CreateControllerWithMultipleEmployees();
+            var actionResult = controller.GetById(this.idOutsideDb);
+            var objectResult = Assert.IsType<NotFoundObjectResult>(actionResult.Result);
+            var id = Assert.IsType<Guid>(objectResult.Value);
+            Assert.Equal(id, this.idOutsideDb);
         }
 
-        private EmployeeContext GetMockDbContext(List<Employee> employees)
+        private readonly Guid idOutsideDb = new Guid("33333333-3333-3333-3333-333333333333");
+
+        private EmployeeController CreateControllerWithMultipleEmployees()
+        {
+            return new EmployeeController(this.CreateMockDbContext(this.GetSampleEmployees()));
+        }
+
+        private EmployeeController CreateControllerWithoutEmployees()
+        {
+            return new EmployeeController(this.CreateMockDbContext(new List<Employee>()));
+        }
+
+        private EmployeeContext CreateMockDbContext(List<Employee> employees)
         {
             var newDbContextOptions = new DbContextOptionsBuilder<EmployeeContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
