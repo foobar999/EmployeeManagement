@@ -64,12 +64,15 @@ namespace EmployeeManagement.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(200)]
         public ActionResult<List<Employee>> GetAll()
         {
             return this.context.Employees.ToList();
         }
 
         [HttpGet("{id}", Name = "GetEmployeeById")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         public ActionResult<Employee> GetById(Guid id)
         {
             var employee = this.context.Employees.Find(id);
@@ -83,6 +86,7 @@ namespace EmployeeManagement.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(201)]
         public ActionResult<Employee> Create(Employee employee)
         {
             this.context.Employees.Add(employee);
@@ -92,6 +96,8 @@ namespace EmployeeManagement.Controllers
         }
 
         [HttpDelete("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         public IActionResult Delete(Guid id)
         {
             var employee = this.context.Employees.Find(id);
@@ -108,6 +114,8 @@ namespace EmployeeManagement.Controllers
         // PATCH ist sehr bizarr und erwartet im JSON-Body eine Liste von kodierten Befehlen
         // siehe auch https://dotnetcoretutorials.com/2017/11/29/json-patch-asp-net-core/
         [HttpPatch("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         public ActionResult<Employee> Patch(Guid id, JsonPatchDocument<Employee> patch)
         {
             var employee = this.context.Employees.Find(id);

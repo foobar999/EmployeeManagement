@@ -15,14 +15,16 @@ namespace EmployeeManagementTest
         [Fact]
         public void GetAll_WithMultipleEmployees_ShouldReturnCorrectEmployees()
         {
-            var controller = new EmployeeController(this.GetFilledMockDbContext());
+            var controller = this.CreateFilledEmployeeController();
             var result = controller.GetAll();
             var actionResult = Assert.IsType<ActionResult<List<Employee>>>(result);
             var listResult = Assert.IsType<List<Employee>>(actionResult.Value);
-            Assert.Equal(2, listResult.Count());
+            var employees = listResult;
+            var expectedEmployees = this.GetSampleEmployees();
+            Assert.Equal(employees, expectedEmployees);
         }
 
-        private EmployeeContext GetMockDbContext(params Employee[] employees)
+        private EmployeeContext GetMockDbContext(List<Employee> employees)
         {
             var newDbContextOptions = new DbContextOptionsBuilder<EmployeeContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
@@ -32,11 +34,10 @@ namespace EmployeeManagementTest
             return newDbContext;
         }
 
-        private EmployeeContext GetFilledMockDbContext()
+        private List<Employee> GetSampleEmployees()
         {
-            return this.GetMockDbContext(
-                new Employee
-                {
+            return new List<Employee> {
+                new Employee{
                     Id = new Guid("11111111-1111-1111-1111-111111111111"),
                     FirstName = "Hans",
                     SecondName = "Wurst",
@@ -49,7 +50,12 @@ namespace EmployeeManagementTest
                     SecondName = "Beam",
                     DateOfBirth = new DateTime(1933, 2, 11)
                 }
-            );
+            };
+        }
+
+        private EmployeeController CreateFilledEmployeeController()
+        {
+            return new EmployeeController(this.GetMockDbContext(this.GetSampleEmployees()));
         }
     }
 }
