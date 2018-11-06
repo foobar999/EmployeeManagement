@@ -12,7 +12,7 @@ namespace EmployeeManagementTest
     {
         // https://docs.microsoft.com/de-de/aspnet/core/mvc/controllers/testing?view=aspnetcore-2.1#test-actionresultlttgt
         [Fact]
-        public void GetAll_WithMultipleEmployees_ShouldReturnCorrectEmployees()
+        public void GetAll_WithMultipleEmployees_ShouldReturnOkResultWithCorrectEmployees()
         {
             var controller = this.CreateControllerWithMultipleEmployees();
             var actionResult = controller.GetAll();
@@ -23,7 +23,7 @@ namespace EmployeeManagementTest
         }
 
         [Fact]
-        public void GetById_WithEmployeeNotInDb_ShouldReturnNotFoundResult()
+        public void GetById_WithEmployeeNotInDb_ShouldReturnNotFoundResultWithCorrectId()
         {
             var controller = this.CreateControllerWithMultipleEmployees();
             var actionResult = controller.GetById(this.idOutsideDb);
