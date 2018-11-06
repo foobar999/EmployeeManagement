@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+// Liste der ActionResults https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.controllerbase.accepted?view=aspnetcore-2.1
+
 // beachte: Git greift auch hier auf ~/.gitconfig zurück!
 // siehe auch 
 // https://stackoverflow.com/questions/15381198/remove-credentials-from-git
@@ -40,6 +42,13 @@ using System.Linq;
 //   - Update-Database <NAME SEED-MIGRATION>
 //   - nochmal Update-Database?
 
+// https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/testing?view=aspnetcore-2.1
+// Controller-Unit-Tests: nur Inhalte einer einzelnen Aktion getestet?
+// - nicht enthalten: filters, routing, and model binding
+// https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-2.1#introduction-to-integration-tests
+// Unit-Tests: benutzen Mocks
+// Integrationstests: benutzen *keine* Mocks, sondern die eigentlichen Objekte
+
 // TODO Tests
 // TODO Swagger
 
@@ -60,7 +69,7 @@ namespace EmployeeManagement.Controllers
             return this.context.Employees.ToList();
         }
 
-        [HttpGet("{id}", Name = "GetEmployee")]
+        [HttpGet("{id}", Name = "GetEmployeeById")]
         public ActionResult<Employee> GetById(Guid id)
         {
             var employee = this.context.Employees.Find(id);
@@ -79,7 +88,7 @@ namespace EmployeeManagement.Controllers
             this.context.Employees.Add(employee);
             this.context.SaveChanges();
 
-            return employee;
+            return base.CreatedAtRoute("GetEmployeeById", new { id = employee.Id }, employee);
         }
 
         [HttpDelete("{id}")]
