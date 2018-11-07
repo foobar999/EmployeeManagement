@@ -88,9 +88,14 @@ namespace EmployeeManagement.Controllers
         // macht m$ aber auch so
         [HttpGet("{id}", Name = "GetById")]
         [ProducesResponseType(200, Type = typeof(Employee))]
+        [ProducesResponseType(400, Type = typeof(ModelStateDictionary))]
         [ProducesResponseType(404, Type = typeof(Guid))]
         public ActionResult<Employee> GetById(Guid id)
         {
+            if (!base.ModelState.IsValid)
+            {
+                return base.BadRequest(base.ModelState);
+            }
             var employee = this.context.Employees.Find(id);
             if (employee == null)
             {

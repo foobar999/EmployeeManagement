@@ -41,6 +41,16 @@ namespace EmployeeManagementTest
         }
 
         [Fact]
+        public void GetById_WithInvalidState_ShouldReturnBadRequestWithSerializableError()
+        {
+            var controller = this.CreateControllerWithMultipleEmployees();
+            controller.ModelState.AddModelError("error", "some error");
+            var employeeInDb = this.sampleEmployees[0];
+            var actionResult = controller.GetById(employeeInDb.Id);
+            this.AssertIsBadRequestWithSerializableError(actionResult);
+        }
+
+        [Fact]
         public void Create_WithValidEmployee_ShouldReturnCreatedAtActionWithPassedEmployee()
         {
             var controller = this.CreateControllerWithoutEmployees();
@@ -52,15 +62,14 @@ namespace EmployeeManagementTest
             var employee = Assert.IsType<Employee>(createdAtActionResult.Value);
             Assert.Equal(employee, newEmployee);
         }
-        
+
         [Fact]
         public void Create_WithInvalidState_ShouldReturnBadRequestWithSerializableError()
         {
             var controller = this.CreateControllerWithoutEmployees();
             controller.ModelState.AddModelError("error", "some error");
             var actionResult = controller.Create(this.sampleEmployees[0]);
-            var badRequestResult = Assert.IsType<BadRequestObjectResult>(actionResult.Result);
-            Assert.IsType<SerializableError>(badRequestResult.Value);
+            this.AssertIsBadRequestWithSerializableError(actionResult);
         }
 
         [Fact]
@@ -127,7 +136,7 @@ namespace EmployeeManagementTest
             }
         };
 
-    private EmployeeController CreateControllerWithMultipleEmployees()
+        private EmployeeController CreateControllerWithMultipleEmployees()
         {
             return new EmployeeController(this.CreateMockDbContext(this.sampleEmployees));
         }
@@ -159,6 +168,12 @@ namespace EmployeeManagementTest
             var objectResult = Assert.IsType<OkObjectResult>(actionResult.Result);
             var employee = Assert.IsType<Employee>(objectResult.Value);
             Assert.Equal(employee, expectedEmployee);
+        }
+
+        private void AssertIsBadRequestWithSerializableError(ActionResult<Employee> actionResult)
+        {
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(actionResult.Result);
+            Assert.IsType<SerializableError>(badRequestResult.Value);
         }
     }
 }
