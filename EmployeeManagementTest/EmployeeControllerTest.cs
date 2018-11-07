@@ -53,6 +53,17 @@ namespace EmployeeManagementTest
             Assert.Equal(employee, newEmployee);
         }
 
+        // TODO "Result" aus Namen raus
+        [Fact]
+        public void Create_WithInvalidState_ShouldReturnBadRequestWithSerializableError()
+        {
+            var controller = this.CreateControllerWithoutEmployees();
+            controller.ModelState.AddModelError("error", "some error");
+            var actionResult = controller.Create(this.sampleEmployees[0]);
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(actionResult.Result);
+            Assert.IsType<SerializableError>(badRequestResult.Value);
+        }
+
         [Fact]
         public void Delete_WithEmployeeNotInDb_ShouldReturnNotFoundResultWithPassedId()
         {
@@ -117,7 +128,7 @@ namespace EmployeeManagementTest
             }
         };
 
-        private EmployeeController CreateControllerWithMultipleEmployees()
+    private EmployeeController CreateControllerWithMultipleEmployees()
         {
             return new EmployeeController(this.CreateMockDbContext(this.sampleEmployees));
         }

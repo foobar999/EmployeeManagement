@@ -1,6 +1,7 @@
 ﻿using EmployeeManagement.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,12 +49,22 @@ using System.Linq;
 // https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-2.1#introduction-to-integration-tests
 // Unit-Tests: benutzen Mocks
 // Integrationstests: benutzen *keine* Mocks, sondern die eigentlichen Objekte
+// andererseits: wie mockt macn DbSet<Employee> ?
+// ef-docs schlagen InMemory vor: https://docs.microsoft.com/en-us/aspnet/web-api/overview/testing-and-debugging/mocking-entity-framework-when-unit-testing-aspnet-web-api-2
+// beachte: InMemory verhält sich gern mal anders https://docs.microsoft.com/en-us/ef/core/miscellaneous/testing/in-memory
+// - erlaubt speichern von Daten, die gegen Constraint verstoßen
+// beim eigentlichen Programm gibt .NET hingegen BadRequest()s zurück
+// M$ sagt: Controller Unit Tests sollen nicht Modellvalidierung, sondern nur Verhalten bei Fehler testen
+// https://docs.microsoft.com/de-de/aspnet/core/mvc/controllers/testing?view=aspnetcore-2.1
 
 // wichtig: Testen gegen OkObjectResult erfordert Rückgabe mittles Ok(obj)
+// beachte für Swagger und Tests https://docs.microsoft.com/en-us/aspnet/core/web-api/action-return-types?view=aspnetcore-2.1
 
 // TODO Tests (inkl. Modellvalidierung)+
 // TODO auf ungültige Patches prüfen (auch, ob Modell danach ok)
 // TODO Swagger
+// TODO Objekt bei [ProducesResponseType(400)] rein?
+// TODO EmployeeContext-Testdaten raus
 
 namespace EmployeeManagement.Controllers
 {
@@ -86,16 +97,21 @@ namespace EmployeeManagement.Controllers
                 return base.NotFound(id);
             }
             return base.Ok(employee);
-            
+
         }
 
         [HttpPost]
-        [ProducesResponseType(201)]
+        [ProducesResponseType(201, Type = typeof(Employee))]
+        [ProducesResponseType(400, Type = typeof(ModelStateDictionary))]
         public ActionResult<Employee> Create(Employee employee)
         {
+            // scheint nur für Test nötig zu sein?
+            if (!base.ModelState.IsValid)
+            {
+                return base.BadRequest(base.ModelState);
+            }
             this.context.Employees.Add(employee);
             this.context.SaveChanges();
-
             return base.CreatedAtAction("GetById", new { id = employee.Id }, employee);
         }
 
