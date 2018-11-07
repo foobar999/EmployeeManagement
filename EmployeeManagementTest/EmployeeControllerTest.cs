@@ -12,7 +12,7 @@ namespace EmployeeManagementTest
     public class EmployeeControllerTest
     {
         // https://docs.microsoft.com/de-de/aspnet/core/mvc/controllers/testing?view=aspnetcore-2.1#test-actionresultlttgt
-        [Fact]
+        [Fact, Trait("Category", "Unit")]
         public void GetAll_WithMultipleEmployees_ShouldReturnOkWithCorrectEmployees()
         {
             var controller = this.CreateControllerWithMultipleEmployees();
@@ -23,7 +23,7 @@ namespace EmployeeManagementTest
             Assert.Equal(employees, expectedEmployees);
         }
 
-        [Fact]
+        [Fact, Trait("Category", "Unit")]
         public void GetById_WithEmployeeNotInDb_ShouldReturnNotFoundWithPassedId()
         {
             var controller = this.CreateControllerWithMultipleEmployees();
@@ -31,7 +31,7 @@ namespace EmployeeManagementTest
             this.AssertIsNotFoundWithExpectedId(actionResult, this.otherId);
         }
 
-        [Fact]
+        [Fact, Trait("Category", "Unit")]
         public void GetById_WithEmployeeInDb_ShouldReturnOkWithCorrectEmployee()
         {
             var controller = this.CreateControllerWithMultipleEmployees();
@@ -40,7 +40,7 @@ namespace EmployeeManagementTest
             this.AssertIsOkWithExpectedEmployee(actionResult, employeeInDb);
         }
 
-        [Fact]
+        [Fact, Trait("Category", "Unit")]
         public void GetById_WithInvalidState_ShouldReturnBadRequestWithSerializableError()
         {
             var controller = this.CreateControllerWithMultipleEmployees();
@@ -50,7 +50,7 @@ namespace EmployeeManagementTest
             this.AssertIsBadRequestWithSerializableError(actionResult);
         }
 
-        [Fact]
+        [Fact, Trait("Category", "Unit")]
         public void Create_WithValidEmployee_ShouldReturnCreatedAtActionWithPassedEmployee()
         {
             var controller = this.CreateControllerWithoutEmployees();
@@ -63,7 +63,7 @@ namespace EmployeeManagementTest
             Assert.Equal(employee, newEmployee);
         }
 
-        [Fact]
+        [Fact, Trait("Category", "Unit")]
         public void Create_WithInvalidState_ShouldReturnBadRequestWithSerializableError()
         {
             var controller = this.CreateControllerWithoutEmployees();
@@ -72,7 +72,7 @@ namespace EmployeeManagementTest
             this.AssertIsBadRequestWithSerializableError(actionResult);
         }
 
-        [Fact]
+        [Fact, Trait("Category", "Unit")]
         public void Delete_WithEmployeeNotInDb_ShouldReturnNotFoundWithPassedId()
         {
             var controller = this.CreateControllerWithMultipleEmployees();
@@ -80,7 +80,7 @@ namespace EmployeeManagementTest
             this.AssertIsNotFoundWithExpectedId(actionResult, this.otherId);
         }
 
-        [Fact]
+        [Fact, Trait("Category", "Unit")]
         public void Delete_WithEmployeeInDb_ShouldReturnOkWithCorrectEmployee()
         {
             var controller = this.CreateControllerWithMultipleEmployees();
@@ -89,7 +89,7 @@ namespace EmployeeManagementTest
             this.AssertIsOkWithExpectedEmployee(actionResult, employeeInDb);
         }
 
-        [Fact]
+        [Fact, Trait("Category", "Unit")]
         public void Patch_WithEmployeeNotInDb_ShouldReturnNotFoundRWithPassedId()
         {
             var controller = this.CreateControllerWithMultipleEmployees();
@@ -98,7 +98,7 @@ namespace EmployeeManagementTest
             this.AssertIsNotFoundWithExpectedId(actionResult, this.otherId);
         }
 
-        [Fact]
+        [Fact, Trait("Category", "Unit")]
         public void Patch_WithEmployeeInDb_ShouldReturnOkWithUpdatedEmployee()
         {
             var controller = this.CreateControllerWithMultipleEmployees();

@@ -60,6 +60,7 @@ using System.Linq;
 // wichtig: Testen gegen OkObjectResult erfordert Rückgabe mittles Ok(obj)
 // beachte für Swagger und Tests https://docs.microsoft.com/en-us/aspnet/core/web-api/action-return-types?view=aspnetcore-2.1
 
+// TODO Kategorien à la [TestMethod, TestCategory(TestCategories.UnitTest)]?
 // TODO Tests (inkl. Modellvalidierung)+
 // TODO auf ungültige Patches prüfen (auch, ob Modell danach ok)
 // TODO Swagger
