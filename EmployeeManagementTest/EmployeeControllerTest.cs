@@ -13,7 +13,7 @@ namespace EmployeeManagementTest
     {
         // https://docs.microsoft.com/de-de/aspnet/core/mvc/controllers/testing?view=aspnetcore-2.1#test-actionresultlttgt
         [Fact]
-        public void GetAll_WithMultipleEmployees_ShouldReturnOkResultWithCorrectEmployees()
+        public void GetAll_WithMultipleEmployees_ShouldReturnOkWithCorrectEmployees()
         {
             var controller = this.CreateControllerWithMultipleEmployees();
             var actionResult = controller.GetAll();
@@ -24,7 +24,7 @@ namespace EmployeeManagementTest
         }
 
         [Fact]
-        public void GetById_WithEmployeeNotInDb_ShouldReturnNotFoundResultWithPassedId()
+        public void GetById_WithEmployeeNotInDb_ShouldReturnNotFoundWithPassedId()
         {
             var controller = this.CreateControllerWithMultipleEmployees();
             var actionResult = controller.GetById(this.otherId);
@@ -32,7 +32,7 @@ namespace EmployeeManagementTest
         }
 
         [Fact]
-        public void GetById_WithEmployeeInDb_ShouldReturnOkResultWithCorrectEmployee()
+        public void GetById_WithEmployeeInDb_ShouldReturnOkWithCorrectEmployee()
         {
             var controller = this.CreateControllerWithMultipleEmployees();
             var employeeInDb = this.sampleEmployees[0];
@@ -52,8 +52,7 @@ namespace EmployeeManagementTest
             var employee = Assert.IsType<Employee>(createdAtActionResult.Value);
             Assert.Equal(employee, newEmployee);
         }
-
-        // TODO "Result" aus Namen raus
+        
         [Fact]
         public void Create_WithInvalidState_ShouldReturnBadRequestWithSerializableError()
         {
@@ -65,7 +64,7 @@ namespace EmployeeManagementTest
         }
 
         [Fact]
-        public void Delete_WithEmployeeNotInDb_ShouldReturnNotFoundResultWithPassedId()
+        public void Delete_WithEmployeeNotInDb_ShouldReturnNotFoundWithPassedId()
         {
             var controller = this.CreateControllerWithMultipleEmployees();
             var actionResult = controller.Delete(this.otherId);
@@ -73,7 +72,7 @@ namespace EmployeeManagementTest
         }
 
         [Fact]
-        public void Delete_WithEmployeeInDb_ShouldReturnOkResultWithCorrectEmployee()
+        public void Delete_WithEmployeeInDb_ShouldReturnOkWithCorrectEmployee()
         {
             var controller = this.CreateControllerWithMultipleEmployees();
             var employeeInDb = this.sampleEmployees[0];
@@ -82,7 +81,7 @@ namespace EmployeeManagementTest
         }
 
         [Fact]
-        public void Patch_WithEmployeeNotInDb_ShouldReturnNotFoundResultWithPassedId()
+        public void Patch_WithEmployeeNotInDb_ShouldReturnNotFoundRWithPassedId()
         {
             var controller = this.CreateControllerWithMultipleEmployees();
             var patch = new JsonPatchDocument<Employee>();
@@ -91,7 +90,7 @@ namespace EmployeeManagementTest
         }
 
         [Fact]
-        public void Patch_WithEmployeeInDb_ShouldReturnOkResultWithUpdatedEmployee()
+        public void Patch_WithEmployeeInDb_ShouldReturnOkWithUpdatedEmployee()
         {
             var controller = this.CreateControllerWithMultipleEmployees();
             var employeeInDb = this.sampleEmployees[0];
