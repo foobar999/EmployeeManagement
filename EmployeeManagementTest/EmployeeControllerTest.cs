@@ -36,9 +36,7 @@ namespace EmployeeManagementTest
             var controller = this.CreateControllerWithMultipleEmployees();
             var employeeInDb = this.sampleEmployees[0];
             var actionResult = controller.GetById(employeeInDb.Id);
-            var objectResult = Assert.IsType<OkObjectResult>(actionResult.Result);
-            var employee = Assert.IsType<Employee>(objectResult.Value);
-            Assert.Equal(employee, employeeInDb);
+            AssertIsOkResultWithExpectedEmployee(actionResult, employeeInDb);
         }
 
         [Fact]
@@ -107,12 +105,18 @@ namespace EmployeeManagementTest
             return newDbContext;
         }
 
-
         private void AssertIsNotFoundResultWithExpectedId(ActionResult<Employee> actionResult, Guid expectedId)
         {
             var notFoundResult = Assert.IsType<NotFoundObjectResult>(actionResult.Result);
             var id = Assert.IsType<Guid>(notFoundResult.Value);
             Assert.Equal(id, expectedId);
+        }
+
+        private static void AssertIsOkResultWithExpectedEmployee(ActionResult<Employee> actionResult, Employee expectedEmployee)
+        {
+            var objectResult = Assert.IsType<OkObjectResult>(actionResult.Result);
+            var employee = Assert.IsType<Employee>(objectResult.Value);
+            Assert.Equal(employee, expectedEmployee);
         }
     }
 }
