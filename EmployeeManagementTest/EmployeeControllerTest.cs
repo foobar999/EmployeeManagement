@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Xunit;
 
 namespace EmployeeManagementTest
@@ -12,7 +13,9 @@ namespace EmployeeManagementTest
     public class EmployeeControllerTest
     {
         // https://docs.microsoft.com/de-de/aspnet/core/mvc/controllers/testing?view=aspnetcore-2.1#test-actionresultlttgt
-        [Fact, Trait("Category", "Unit")]
+        [Fact]
+        [Trait("Category", "Unit")]
+        [ExcludeFromCodeCoverage]
         public void GetAll_WithMultipleEmployees_ShouldReturnOkWithCorrectEmployees()
         {
             var controller = this.CreateControllerWithMultipleEmployees();
@@ -23,7 +26,9 @@ namespace EmployeeManagementTest
             Assert.Equal(employees, expectedEmployees);
         }
 
-        [Fact, Trait("Category", "Unit")]
+        [Fact]
+        [Trait("Category", "Unit")]
+        [ExcludeFromCodeCoverage]
         public void GetById_WithEmployeeNotInDb_ShouldReturnNotFoundWithPassedId()
         {
             var controller = this.CreateControllerWithMultipleEmployees();
@@ -31,7 +36,9 @@ namespace EmployeeManagementTest
             this.AssertIsNotFoundWithExpectedId(actionResult, this.otherId);
         }
 
-        [Fact, Trait("Category", "Unit")]
+        [Fact]
+        [Trait("Category", "Unit")]
+        [ExcludeFromCodeCoverage]
         public void GetById_WithEmployeeInDb_ShouldReturnOkWithCorrectEmployee()
         {
             var controller = this.CreateControllerWithMultipleEmployees();
@@ -40,7 +47,9 @@ namespace EmployeeManagementTest
             this.AssertIsOkWithExpectedEmployee(actionResult, employeeInDb);
         }
 
-        [Fact, Trait("Category", "Unit")]
+        [Fact]
+        [Trait("Category", "Unit")]
+        [ExcludeFromCodeCoverage]
         public void GetById_WithInvalidState_ShouldReturnBadRequestWithSerializableError()
         {
             var controller = this.CreateControllerWithMultipleEmployees();
@@ -50,7 +59,9 @@ namespace EmployeeManagementTest
             this.AssertIsBadRequestWithSerializableError(actionResult);
         }
 
-        [Fact, Trait("Category", "Unit")]
+        [Fact]
+        [Trait("Category", "Unit")]
+        [ExcludeFromCodeCoverage]
         public void Create_WithValidEmployee_ShouldReturnCreatedAtActionWithPassedEmployee()
         {
             var controller = this.CreateControllerWithoutEmployees();
@@ -63,7 +74,9 @@ namespace EmployeeManagementTest
             Assert.Equal(employee, newEmployee);
         }
 
-        [Fact, Trait("Category", "Unit")]
+        [Fact]
+        [Trait("Category", "Unit")]
+        [ExcludeFromCodeCoverage]
         public void Create_WithInvalidState_ShouldReturnBadRequestWithSerializableError()
         {
             var controller = this.CreateControllerWithoutEmployees();
@@ -72,7 +85,9 @@ namespace EmployeeManagementTest
             this.AssertIsBadRequestWithSerializableError(actionResult);
         }
 
-        [Fact, Trait("Category", "Unit")]
+        [Fact]
+        [Trait("Category", "Unit")]
+        [ExcludeFromCodeCoverage]
         public void Delete_WithEmployeeNotInDb_ShouldReturnNotFoundWithPassedId()
         {
             var controller = this.CreateControllerWithMultipleEmployees();
@@ -80,7 +95,9 @@ namespace EmployeeManagementTest
             this.AssertIsNotFoundWithExpectedId(actionResult, this.otherId);
         }
 
-        [Fact, Trait("Category", "Unit")]
+        [Fact]
+        [Trait("Category", "Unit")]
+        [ExcludeFromCodeCoverage]
         public void Delete_WithEmployeeInDb_ShouldReturnOkWithCorrectEmployee()
         {
             var controller = this.CreateControllerWithMultipleEmployees();
@@ -89,7 +106,9 @@ namespace EmployeeManagementTest
             this.AssertIsOkWithExpectedEmployee(actionResult, employeeInDb);
         }
 
-        [Fact, Trait("Category", "Unit")]
+        [Fact]
+        [Trait("Category", "Unit")]
+        [ExcludeFromCodeCoverage]
         public void Patch_WithEmployeeNotInDb_ShouldReturnNotFoundRWithPassedId()
         {
             var controller = this.CreateControllerWithMultipleEmployees();
@@ -98,7 +117,9 @@ namespace EmployeeManagementTest
             this.AssertIsNotFoundWithExpectedId(actionResult, this.otherId);
         }
 
-        [Fact, Trait("Category", "Unit")]
+        [Fact]
+        [Trait("Category", "Unit")]
+        [ExcludeFromCodeCoverage]
         public void Patch_WithEmployeeInDb_ShouldReturnOkWithUpdatedEmployee()
         {
             var controller = this.CreateControllerWithMultipleEmployees();
