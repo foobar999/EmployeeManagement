@@ -28,7 +28,7 @@ namespace EmployeeManagementTest
         {
             var controller = this.CreateControllerWithMultipleEmployees();
             var actionResult = controller.GetById(this.otherId);
-            this.AssertIsNotFoundResultWithExpectedId(actionResult, this.otherId);
+            this.AssertIsNotFoundWithExpectedId(actionResult, this.otherId);
         }
 
         [Fact]
@@ -37,7 +37,7 @@ namespace EmployeeManagementTest
             var controller = this.CreateControllerWithMultipleEmployees();
             var employeeInDb = this.sampleEmployees[0];
             var actionResult = controller.GetById(employeeInDb.Id);
-            this.AssertIsOkResultWithExpectedEmployee(actionResult, employeeInDb);
+            this.AssertIsOkWithExpectedEmployee(actionResult, employeeInDb);
         }
 
         [Fact]
@@ -77,7 +77,7 @@ namespace EmployeeManagementTest
         {
             var controller = this.CreateControllerWithMultipleEmployees();
             var actionResult = controller.Delete(this.otherId);
-            this.AssertIsNotFoundResultWithExpectedId(actionResult, this.otherId);
+            this.AssertIsNotFoundWithExpectedId(actionResult, this.otherId);
         }
 
         [Fact]
@@ -86,7 +86,7 @@ namespace EmployeeManagementTest
             var controller = this.CreateControllerWithMultipleEmployees();
             var employeeInDb = this.sampleEmployees[0];
             var actionResult = controller.Delete(employeeInDb.Id);
-            this.AssertIsOkResultWithExpectedEmployee(actionResult, employeeInDb);
+            this.AssertIsOkWithExpectedEmployee(actionResult, employeeInDb);
         }
 
         [Fact]
@@ -95,7 +95,7 @@ namespace EmployeeManagementTest
             var controller = this.CreateControllerWithMultipleEmployees();
             var patch = new JsonPatchDocument<Employee>();
             var actionResult = controller.Patch(this.otherId, patch);
-            this.AssertIsNotFoundResultWithExpectedId(actionResult, this.otherId);
+            this.AssertIsNotFoundWithExpectedId(actionResult, this.otherId);
         }
 
         [Fact]
@@ -114,7 +114,7 @@ namespace EmployeeManagementTest
                 FirstName = "New",
                 SecondName = "Name",
             };
-            this.AssertIsOkResultWithExpectedEmployee(actionResult, expectedEmployee);
+            this.AssertIsOkWithExpectedEmployee(actionResult, expectedEmployee);
         }
 
         private readonly Guid otherId = new Guid("33333333-3333-3333-3333-333333333333");
@@ -156,14 +156,14 @@ namespace EmployeeManagementTest
             return newDbContext;
         }
 
-        private void AssertIsNotFoundResultWithExpectedId(ActionResult<Employee> actionResult, Guid expectedId)
+        private void AssertIsNotFoundWithExpectedId(ActionResult<Employee> actionResult, Guid expectedId)
         {
             var notFoundResult = Assert.IsType<NotFoundObjectResult>(actionResult.Result);
             var id = Assert.IsType<Guid>(notFoundResult.Value);
             Assert.Equal(id, expectedId);
         }
 
-        private void AssertIsOkResultWithExpectedEmployee(ActionResult<Employee> actionResult, Employee expectedEmployee)
+        private void AssertIsOkWithExpectedEmployee(ActionResult<Employee> actionResult, Employee expectedEmployee)
         {
             var objectResult = Assert.IsType<OkObjectResult>(actionResult.Result);
             var employee = Assert.IsType<Employee>(objectResult.Value);
