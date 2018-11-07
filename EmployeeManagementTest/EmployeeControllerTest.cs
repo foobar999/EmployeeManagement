@@ -19,11 +19,13 @@ namespace EmployeeManagementTest
         public void GetAll_WithMultipleEmployees_ShouldReturnOkWithCorrectEmployees()
         {
             var controller = this.CreateControllerWithMultipleEmployees();
-            var actionResult = controller.GetAll();
-            var objectResult = Assert.IsType<OkObjectResult>(actionResult.Result);
-            var employees = Assert.IsAssignableFrom<IEnumerable<Employee>>(objectResult.Value);
             var expectedEmployees = this.sampleEmployees;
-            Assert.Equal(employees, expectedEmployees);
+
+            var actionResult = controller.GetAll();
+
+            var objectResult = Assert.IsType<OkObjectResult>(actionResult.Result);
+            var actualEmployees = Assert.IsAssignableFrom<IEnumerable<Employee>>(objectResult.Value);
+            Assert.Equal(expectedEmployees, actualEmployees);
         }
 
         [Fact]
@@ -32,8 +34,11 @@ namespace EmployeeManagementTest
         public void GetById_WithEmployeeNotInDb_ShouldReturnNotFoundWithPassedId()
         {
             var controller = this.CreateControllerWithMultipleEmployees();
+            var expectedId = this.otherId;
+
             var actionResult = controller.GetById(this.otherId);
-            this.AssertIsNotFoundWithExpectedId(actionResult, this.otherId);
+
+            this.AssertIsNotFoundWithExpectedId(actionResult, expectedId);
         }
 
         [Fact]
@@ -42,9 +47,11 @@ namespace EmployeeManagementTest
         public void GetById_WithEmployeeInDb_ShouldReturnOkWithCorrectEmployee()
         {
             var controller = this.CreateControllerWithMultipleEmployees();
-            var employeeInDb = this.sampleEmployees[0];
-            var actionResult = controller.GetById(employeeInDb.Id);
-            this.AssertIsOkWithExpectedEmployee(actionResult, employeeInDb);
+            var expectedEmployee = this.sampleEmployees[0];
+
+            var actionResult = controller.GetById(this.sampleEmployees[0].Id);
+
+            this.AssertIsOkWithExpectedEmployee(actionResult, expectedEmployee);
         }
 
         [Fact]
@@ -54,8 +61,9 @@ namespace EmployeeManagementTest
         {
             var controller = this.CreateControllerWithMultipleEmployees();
             controller.ModelState.AddModelError("error", "some error");
-            var employeeInDb = this.sampleEmployees[0];
-            var actionResult = controller.GetById(employeeInDb.Id);
+
+            var actionResult = controller.GetById(this.sampleEmployees[0].Id);
+
             this.AssertIsBadRequestWithSerializableError(actionResult);
         }
 
@@ -65,13 +73,15 @@ namespace EmployeeManagementTest
         public void Create_WithValidEmployee_ShouldReturnCreatedAtActionWithPassedEmployee()
         {
             var controller = this.CreateControllerWithoutEmployees();
-            var newEmployee = this.sampleEmployees[0];
-            var actionResult = controller.Create(newEmployee);
+            var expectedEmployee = this.sampleEmployees[0];
+
+            var actionResult = controller.Create(this.sampleEmployees[0]);
+
             var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(actionResult.Result);
             Assert.Equal("GetById", createdAtActionResult.ActionName); // guter Stil?
-            Assert.Equal(newEmployee.Id, createdAtActionResult.RouteValues["id"]); // guter Stil?
-            var employee = Assert.IsType<Employee>(createdAtActionResult.Value);
-            Assert.Equal(employee, newEmployee);
+            Assert.Equal(expectedEmployee.Id, createdAtActionResult.RouteValues["id"]); // guter Stil?
+            var actualEmployee = Assert.IsType<Employee>(createdAtActionResult.Value);
+            Assert.Equal(expectedEmployee, actualEmployee);
         }
 
         [Fact]
@@ -81,7 +91,9 @@ namespace EmployeeManagementTest
         {
             var controller = this.CreateControllerWithoutEmployees();
             controller.ModelState.AddModelError("error", "some error");
+
             var actionResult = controller.Create(this.sampleEmployees[0]);
+
             this.AssertIsBadRequestWithSerializableError(actionResult);
         }
 
@@ -91,8 +103,11 @@ namespace EmployeeManagementTest
         public void Delete_WithEmployeeNotInDb_ShouldReturnNotFoundWithPassedId()
         {
             var controller = this.CreateControllerWithMultipleEmployees();
+            var expectedId = this.otherId;
+
             var actionResult = controller.Delete(this.otherId);
-            this.AssertIsNotFoundWithExpectedId(actionResult, this.otherId);
+
+            this.AssertIsNotFoundWithExpectedId(actionResult, expectedId);
         }
 
         [Fact]
@@ -101,20 +116,25 @@ namespace EmployeeManagementTest
         public void Delete_WithEmployeeInDb_ShouldReturnOkWithCorrectEmployee()
         {
             var controller = this.CreateControllerWithMultipleEmployees();
-            var employeeInDb = this.sampleEmployees[0];
-            var actionResult = controller.Delete(employeeInDb.Id);
-            this.AssertIsOkWithExpectedEmployee(actionResult, employeeInDb);
+            var expectedEmployee = this.sampleEmployees[0];
+
+            var actionResult = controller.Delete(this.sampleEmployees[0].Id);
+
+            this.AssertIsOkWithExpectedEmployee(actionResult, expectedEmployee);
         }
 
         [Fact]
         [Trait("Category", "Unit")]
         [ExcludeFromCodeCoverage]
-        public void Patch_WithEmployeeNotInDb_ShouldReturnNotFoundRWithPassedId()
+        public void Patch_WithEmployeeNotInDb_ShouldReturnNotFoundWithPassedId()
         {
             var controller = this.CreateControllerWithMultipleEmployees();
             var patch = new JsonPatchDocument<Employee>();
+            var expectedId = this.otherId;
+
             var actionResult = controller.Patch(this.otherId, patch);
-            this.AssertIsNotFoundWithExpectedId(actionResult, this.otherId);
+
+            this.AssertIsNotFoundWithExpectedId(actionResult, expectedId);
         }
 
         [Fact]
@@ -123,18 +143,20 @@ namespace EmployeeManagementTest
         public void Patch_WithEmployeeInDb_ShouldReturnOkWithUpdatedEmployee()
         {
             var controller = this.CreateControllerWithMultipleEmployees();
-            var employeeInDb = this.sampleEmployees[0];
+            var idOfEmployeeInDb = this.sampleEmployees[0].Id;
             var nameAndBirthdayPatch = new JsonPatchDocument<Employee>();
             nameAndBirthdayPatch.Replace(emp => emp.FirstName, "New");
             nameAndBirthdayPatch.Replace(emp => emp.SecondName, "Name");
             nameAndBirthdayPatch.Remove(emp => emp.DateOfBirth);
-            var actionResult = controller.Patch(employeeInDb.Id, nameAndBirthdayPatch);
             var expectedEmployee = new Employee
             {
-                Id = employeeInDb.Id,
+                Id = idOfEmployeeInDb,
                 FirstName = "New",
                 SecondName = "Name",
             };
+
+            var actionResult = controller.Patch(idOfEmployeeInDb, nameAndBirthdayPatch);
+
             this.AssertIsOkWithExpectedEmployee(actionResult, expectedEmployee);
         }
 
@@ -180,15 +202,15 @@ namespace EmployeeManagementTest
         private void AssertIsNotFoundWithExpectedId(ActionResult<Employee> actionResult, Guid expectedId)
         {
             var notFoundResult = Assert.IsType<NotFoundObjectResult>(actionResult.Result);
-            var id = Assert.IsType<Guid>(notFoundResult.Value);
-            Assert.Equal(id, expectedId);
+            var actualId = Assert.IsType<Guid>(notFoundResult.Value);
+            Assert.Equal(expectedId, actualId);
         }
 
         private void AssertIsOkWithExpectedEmployee(ActionResult<Employee> actionResult, Employee expectedEmployee)
         {
             var objectResult = Assert.IsType<OkObjectResult>(actionResult.Result);
-            var employee = Assert.IsType<Employee>(objectResult.Value);
-            Assert.Equal(employee, expectedEmployee);
+            var actualEmployee = Assert.IsType<Employee>(objectResult.Value);
+            Assert.Equal(expectedEmployee, actualEmployee);
         }
 
         private void AssertIsBadRequestWithSerializableError(ActionResult<Employee> actionResult)
