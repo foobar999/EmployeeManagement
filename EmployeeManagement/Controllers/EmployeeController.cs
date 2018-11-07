@@ -124,12 +124,12 @@ namespace EmployeeManagement.Controllers
             var employee = this.context.Employees.Find(id);
             if (employee == null)
             {
-                return base.NotFound();
+                return base.NotFound(id);
             }
             patch.ApplyTo(employee);
             this.context.SaveChanges();
 
-            return base.Ok();
+            return base.Ok(employee);
         }
 
         private readonly EmployeeContext context;
