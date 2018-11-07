@@ -36,7 +36,7 @@ namespace EmployeeManagementTest
             var controller = this.CreateControllerWithMultipleEmployees();
             var employeeInDb = this.sampleEmployees[0];
             var actionResult = controller.GetById(employeeInDb.Id);
-            AssertIsOkResultWithExpectedEmployee(actionResult, employeeInDb);
+            this.AssertIsOkResultWithExpectedEmployee(actionResult, employeeInDb);
         }
 
         [Fact]
@@ -64,6 +64,15 @@ namespace EmployeeManagementTest
             var controller = this.CreateControllerWithMultipleEmployees();
             var actionResult = controller.Delete(this.otherId);
             this.AssertIsNotFoundResultWithExpectedId(actionResult, this.otherId);
+        }
+
+        [Fact]
+        public void Delete_WithEmployeeInDb_ShouldReturnOkResultWithCorrectEmployee()
+        {
+            var controller = this.CreateControllerWithMultipleEmployees();
+            var employeeInDb = this.sampleEmployees[0];
+            var actionResult = controller.Delete(employeeInDb.Id);
+            this.AssertIsOkResultWithExpectedEmployee(actionResult, employeeInDb);
         }
 
         private readonly Guid otherId = new Guid("33333333-3333-3333-3333-333333333333");
@@ -112,7 +121,7 @@ namespace EmployeeManagementTest
             Assert.Equal(id, expectedId);
         }
 
-        private static void AssertIsOkResultWithExpectedEmployee(ActionResult<Employee> actionResult, Employee expectedEmployee)
+        private void AssertIsOkResultWithExpectedEmployee(ActionResult<Employee> actionResult, Employee expectedEmployee)
         {
             var objectResult = Assert.IsType<OkObjectResult>(actionResult.Result);
             var employee = Assert.IsType<Employee>(objectResult.Value);
