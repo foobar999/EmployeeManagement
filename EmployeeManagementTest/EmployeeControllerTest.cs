@@ -41,7 +41,7 @@ namespace EmployeeManagementTest
         }
 
         [Fact]
-        public void Create_WithNewEmployee_ShouldReturnCreatedAtActionWithPassedEmployee()
+        public void Create_WithValidEmployee_ShouldReturnCreatedAtActionWithPassedEmployee()
         {
             var controller = this.CreateControllerWithoutEmployees();
             var newEmployee = this.sampleEmployees[0];
