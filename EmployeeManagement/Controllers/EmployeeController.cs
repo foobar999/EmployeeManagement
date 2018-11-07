@@ -99,19 +99,19 @@ namespace EmployeeManagement.Controllers
         }
 
         [HttpDelete("{id}")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
-        public IActionResult Delete(Guid id)
+        [ProducesResponseType(200, Type = typeof(Guid))]
+        [ProducesResponseType(404, Type = typeof(Employee))]
+        public ActionResult<Employee> Delete(Guid id)
         {
             var employee = this.context.Employees.Find(id);
             if (employee == null)
             {
-                return base.NotFound();
+                return base.NotFound(id);
             }
             this.context.Employees.Remove(employee);
             this.context.SaveChanges();
 
-            return base.Ok();
+            return base.Ok(employee);
         }
 
         // PATCH ist sehr bizarr und erwartet im JSON-Body eine Liste von kodierten Befehlen

@@ -27,9 +27,7 @@ namespace EmployeeManagementTest
         {
             var controller = this.CreateControllerWithMultipleEmployees();
             var actionResult = controller.GetById(this.otherId);
-            var noFoundResult = Assert.IsType<NotFoundObjectResult>(actionResult.Result);
-            var id = Assert.IsType<Guid>(noFoundResult.Value);
-            Assert.Equal(id, this.otherId);
+            this.AssertIsNotFoundResultWithExpectedId(actionResult, this.otherId);
         }
 
         [Fact]
@@ -60,6 +58,14 @@ namespace EmployeeManagementTest
             Assert.Equal(this.otherId, createdAtActionResult.RouteValues["id"]); // guter Stil?
             var employee = Assert.IsType<Employee>(createdAtActionResult.Value);
             Assert.Equal(employee, newEmployee);
+        }
+
+        [Fact]
+        public void Delete_WithEmployeeNotInDb_ShouldReturnNotFoundResultWithPassedId()
+        {
+            var controller = this.CreateControllerWithMultipleEmployees();
+            var actionResult = controller.Delete(this.otherId);
+            this.AssertIsNotFoundResultWithExpectedId(actionResult, this.otherId);
         }
 
         private readonly Guid otherId = new Guid("33333333-3333-3333-3333-333333333333");
@@ -99,6 +105,14 @@ namespace EmployeeManagementTest
             newDbContext.Employees.AddRange(employees);
             newDbContext.SaveChanges(); //!!!!!
             return newDbContext;
+        }
+
+
+        private void AssertIsNotFoundResultWithExpectedId(ActionResult<Employee> actionResult, Guid expectedId)
+        {
+            var notFoundResult = Assert.IsType<NotFoundObjectResult>(actionResult.Result);
+            var id = Assert.IsType<Guid>(notFoundResult.Value);
+            Assert.Equal(id, expectedId);
         }
     }
 }
