@@ -138,15 +138,15 @@ namespace EmployeeManagementTest
 
         private EmployeeController CreateControllerWithMultipleEmployees()
         {
-            return new EmployeeController(this.CreateMockDbContext(this.sampleEmployees));
+            return new EmployeeController(this.CreateDbContextWithEmployees(this.sampleEmployees));
         }
 
         private EmployeeController CreateControllerWithoutEmployees()
         {
-            return new EmployeeController(this.CreateMockDbContext(new List<Employee>()));
+            return new EmployeeController(this.CreateDbContextWithEmployees(new List<Employee>()));
         }
 
-        private EmployeeContext CreateMockDbContext(List<Employee> employees)
+        private EmployeeContext CreateDbContextWithEmployees(List<Employee> employees)
         {
             var newDbContextOptions = new DbContextOptionsBuilder<EmployeeContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
