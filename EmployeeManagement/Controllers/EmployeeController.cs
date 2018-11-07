@@ -75,8 +75,8 @@ namespace EmployeeManagement.Controllers
         // ist es guter Stil, den Rückgabetyp zu variieren? (d.g. Guid vs. Employee)
         // macht m$ aber auch so
         [HttpGet("{id}", Name = "GetById")]
-        [ProducesResponseType(200, Type = typeof(Guid))]
-        [ProducesResponseType(404, Type = typeof(Employee))]
+        [ProducesResponseType(200, Type = typeof(Employee))]
+        [ProducesResponseType(404, Type = typeof(Guid))]
         public ActionResult<Employee> GetById(Guid id)
         {
             var employee = this.context.Employees.Find(id);
@@ -99,8 +99,8 @@ namespace EmployeeManagement.Controllers
         }
 
         [HttpDelete("{id}")]
-        [ProducesResponseType(200, Type = typeof(Guid))]
-        [ProducesResponseType(404, Type = typeof(Employee))]
+        [ProducesResponseType(200, Type = typeof(Employee))]
+        [ProducesResponseType(404, Type = typeof(Guid))]
         public ActionResult<Employee> Delete(Guid id)
         {
             var employee = this.context.Employees.Find(id);
@@ -117,8 +117,8 @@ namespace EmployeeManagement.Controllers
         // PATCH ist sehr bizarr und erwartet im JSON-Body eine Liste von kodierten Befehlen
         // siehe auch https://dotnetcoretutorials.com/2017/11/29/json-patch-asp-net-core/
         [HttpPatch("{id}")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(200, Type = typeof(Employee))]
+        [ProducesResponseType(404, Type = typeof(Guid))]
         public ActionResult<Employee> Patch(Guid id, JsonPatchDocument<Employee> patch)
         {
             var employee = this.context.Employees.Find(id);
