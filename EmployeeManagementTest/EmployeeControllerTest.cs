@@ -1,5 +1,6 @@
 using EmployeeManagement.Controllers;
 using EmployeeManagement.Models;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -73,6 +74,15 @@ namespace EmployeeManagementTest
             var employeeInDb = this.sampleEmployees[0];
             var actionResult = controller.Delete(employeeInDb.Id);
             this.AssertIsOkResultWithExpectedEmployee(actionResult, employeeInDb);
+        }
+
+        [Fact]
+        public void Patch_WithEmployeeNotInDb_ShouldReturnNotFoundResultWithPassedId()
+        {
+            var controller = this.CreateControllerWithMultipleEmployees();
+            var validPatch = new JsonPatchDocument<Employee>();
+            var actionResult = controller.Patch(this.otherId, validPatch);
+            this.AssertIsNotFoundResultWithExpectedId(actionResult, this.otherId);
         }
 
         private readonly Guid otherId = new Guid("33333333-3333-3333-3333-333333333333");
