@@ -80,9 +80,28 @@ namespace EmployeeManagementTest
         public void Patch_WithEmployeeNotInDb_ShouldReturnNotFoundResultWithPassedId()
         {
             var controller = this.CreateControllerWithMultipleEmployees();
-            var validPatch = new JsonPatchDocument<Employee>();
-            var actionResult = controller.Patch(this.otherId, validPatch);
+            var patch = new JsonPatchDocument<Employee>();
+            var actionResult = controller.Patch(this.otherId, patch);
             this.AssertIsNotFoundResultWithExpectedId(actionResult, this.otherId);
+        }
+
+        [Fact]
+        public void Patch_WithEmployeeInDb_ShouldReturnOkResultWithUpdatedEmployee()
+        {
+            var controller = this.CreateControllerWithMultipleEmployees();
+            var employeeInDb = this.sampleEmployees[0];
+            var nameAndBirthdayPatch = new JsonPatchDocument<Employee>();
+            nameAndBirthdayPatch.Replace(emp => emp.FirstName, "New");
+            nameAndBirthdayPatch.Replace(emp => emp.SecondName, "Name");
+            nameAndBirthdayPatch.Remove(emp => emp.DateOfBirth);
+            var actionResult = controller.Patch(employeeInDb.Id, nameAndBirthdayPatch);
+            var expectedEmployee = new Employee
+            {
+                Id = employeeInDb.Id,
+                FirstName = "New",
+                SecondName = "Name",
+            };
+            this.AssertIsOkResultWithExpectedEmployee(actionResult, expectedEmployee);
         }
 
         private readonly Guid otherId = new Guid("33333333-3333-3333-3333-333333333333");

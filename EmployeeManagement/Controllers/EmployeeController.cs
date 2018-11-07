@@ -52,7 +52,7 @@ using System.Linq;
 // wichtig: Testen gegen OkObjectResult erfordert Rückgabe mittles Ok(obj)
 
 // TODO Tests (inkl. Modellvalidierung)+
-// TODO auf ungültige Patches prüfen
+// TODO auf ungültige Patches prüfen (auch, ob Modell danach ok)
 // TODO Swagger
 
 namespace EmployeeManagement.Controllers
