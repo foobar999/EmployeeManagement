@@ -44,17 +44,11 @@ namespace EmployeeManagementTest
         public void Create_WithNewEmployee_ShouldReturnCreatedAtActionWithPassedEmployee()
         {
             var controller = this.CreateControllerWithoutEmployees();
-            var newEmployee = new Employee
-            {
-                Id = this.otherId,
-                FirstName = "Hallo",
-                SecondName = "Welt",
-                DateOfBirth = null
-            };
+            var newEmployee = this.sampleEmployees[0];
             var actionResult = controller.Create(newEmployee);
             var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(actionResult.Result);
             Assert.Equal("GetById", createdAtActionResult.ActionName); // guter Stil?
-            Assert.Equal(this.otherId, createdAtActionResult.RouteValues["id"]); // guter Stil?
+            Assert.Equal(newEmployee.Id, createdAtActionResult.RouteValues["id"]); // guter Stil?
             var employee = Assert.IsType<Employee>(createdAtActionResult.Value);
             Assert.Equal(employee, newEmployee);
         }
