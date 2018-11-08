@@ -16,6 +16,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.1.4" />
     <PackageReference Include="Moq" Version="4.10.0" />
+    <PackageReference Include="NSwag.AspNetCore" Version="11.20.1" />
   </ItemGroup>
 
 </Project>

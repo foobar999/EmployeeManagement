@@ -61,6 +61,9 @@ using System.Linq;
 // wichtig: Testen gegen OkObjectResult erfordert Rückgabe mittles Ok(obj)
 // beachte für Swagger und Tests https://docs.microsoft.com/en-us/aspnet/core/web-api/action-return-types?view=aspnetcore-2.1
 
+// Swagger-Möglichkeiten: NSwag, Swashbuckle -> ich nehm ma NSwag
+// https://docs.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-nswag?view=aspnetcore-2.1
+
 // TODO Kategorien à la [TestMethod, TestCategory(TestCategories.UnitTest)]?
 // TODO eigentlich genau 1 Assert je Test -> auch bei Typecast-Checks?
 // TODO auf ungültige Patches prüfen (auch, ob Modell danach ok)

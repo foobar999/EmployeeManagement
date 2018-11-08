@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NJsonSchema;
+using NSwag.AspNetCore;
 
 namespace EmployeeManagement
 {
@@ -24,6 +26,7 @@ namespace EmployeeManagement
             //services.AddDbContext<EmployeeContext>(opt => opt.UseInMemoryDatabase("Employees"));
             services.AddDbContext<EmployeeContext>(opt => opt.UseSqlite("Data Source=employees.db"));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddSwagger();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -33,6 +36,12 @@ namespace EmployeeManagement
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwaggerUi3WithApiExplorer(settings =>
+            {
+                settings.GeneratorSettings.DefaultPropertyNameHandling = 
+                    PropertyNameHandling.CamelCase;
+            });
 
             app.UseMvc();
         }
