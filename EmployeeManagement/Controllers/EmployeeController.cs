@@ -70,6 +70,7 @@ using System.Linq;
 // TODO EmployeeContext-Testdaten raus
 // TODO "var" böse?
 // TODO Assert.Equal(employee1,employee2) gut? (erfordert sonst unnötige Equals-Methode)
+// TODO Integrationstest
 
 namespace EmployeeManagement.Controllers
 {
@@ -130,6 +131,10 @@ namespace EmployeeManagement.Controllers
         [ProducesResponseType(404, Type = typeof(Guid))]
         public ActionResult<Employee> Delete(Guid id)
         {
+            if (!base.ModelState.IsValid)
+            {
+                return base.BadRequest(base.ModelState);
+            }
             var employee = this.context.Employees.Find(id);
             if (employee == null)
             {

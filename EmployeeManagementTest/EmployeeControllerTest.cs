@@ -18,7 +18,7 @@ namespace EmployeeManagementTest
         [ExcludeFromCodeCoverage]
         public void GetAll_WithMultipleEmployees_ShouldReturnOkWithCorrectEmployees()
         {
-            var controller = this.CreateControllerWithMultipleEmployees();
+            var controller = this.CreateControllerWithSampleEmployees();
             var expectedEmployees = this.sampleEmployees;
 
             var actionResult = controller.GetAll();
@@ -33,7 +33,7 @@ namespace EmployeeManagementTest
         [ExcludeFromCodeCoverage]
         public void GetById_WithEmployeeNotInDb_ShouldReturnNotFoundWithPassedId()
         {
-            var controller = this.CreateControllerWithMultipleEmployees();
+            var controller = this.CreateControllerWithSampleEmployees();
             var expectedId = this.otherId;
 
             var actionResult = controller.GetById(this.otherId);
@@ -46,7 +46,7 @@ namespace EmployeeManagementTest
         [ExcludeFromCodeCoverage]
         public void GetById_WithEmployeeInDb_ShouldReturnOkWithCorrectEmployee()
         {
-            var controller = this.CreateControllerWithMultipleEmployees();
+            var controller = this.CreateControllerWithSampleEmployees();
             var expectedEmployee = this.sampleEmployees[0];
 
             var actionResult = controller.GetById(this.sampleEmployees[0].Id);
@@ -59,7 +59,7 @@ namespace EmployeeManagementTest
         [ExcludeFromCodeCoverage]
         public void GetById_WithInvalidState_ShouldReturnBadRequestWithSerializableError()
         {
-            var controller = this.CreateControllerWithMultipleEmployees();
+            var controller = this.CreateControllerWithSampleEmployees();
             controller.ModelState.AddModelError("error", "some error");
 
             var actionResult = controller.GetById(this.sampleEmployees[0].Id);
@@ -70,7 +70,7 @@ namespace EmployeeManagementTest
         [Fact]
         [Trait("Category", "Unit")]
         [ExcludeFromCodeCoverage]
-        public void Create_WithValidEmployee_ShouldReturnCreatedAtActionWithPassedEmployee()
+        public void Create_WithNewEmployee_ShouldReturnCreatedAtActionWithPassedEmployee()
         {
             var controller = this.CreateControllerWithoutEmployees();
             var expectedEmployee = this.sampleEmployees[0];
@@ -102,7 +102,7 @@ namespace EmployeeManagementTest
         [ExcludeFromCodeCoverage]
         public void Delete_WithEmployeeNotInDb_ShouldReturnNotFoundWithPassedId()
         {
-            var controller = this.CreateControllerWithMultipleEmployees();
+            var controller = this.CreateControllerWithSampleEmployees();
             var expectedId = this.otherId;
 
             var actionResult = controller.Delete(this.otherId);
@@ -115,7 +115,7 @@ namespace EmployeeManagementTest
         [ExcludeFromCodeCoverage]
         public void Delete_WithEmployeeInDb_ShouldReturnOkWithCorrectEmployee()
         {
-            var controller = this.CreateControllerWithMultipleEmployees();
+            var controller = this.CreateControllerWithSampleEmployees();
             var expectedEmployee = this.sampleEmployees[0];
 
             var actionResult = controller.Delete(this.sampleEmployees[0].Id);
@@ -126,9 +126,22 @@ namespace EmployeeManagementTest
         [Fact]
         [Trait("Category", "Unit")]
         [ExcludeFromCodeCoverage]
+        public void Delete_WithInvalidState_ShouldReturnBadRequestWithSerializableError()
+        {
+            var controller = this.CreateControllerWithSampleEmployees();
+            controller.ModelState.AddModelError("error", "some error");
+
+            var actionResult = controller.Delete(this.sampleEmployees[0].Id);
+
+            this.AssertIsBadRequestWithSerializableError(actionResult);
+        }
+
+        [Fact]
+        [Trait("Category", "Unit")]
+        [ExcludeFromCodeCoverage]
         public void Patch_WithEmployeeNotInDb_ShouldReturnNotFoundWithPassedId()
         {
-            var controller = this.CreateControllerWithMultipleEmployees();
+            var controller = this.CreateControllerWithSampleEmployees();
             var patch = new JsonPatchDocument<Employee>();
             var expectedId = this.otherId;
 
@@ -142,7 +155,7 @@ namespace EmployeeManagementTest
         [ExcludeFromCodeCoverage]
         public void Patch_WithEmployeeInDb_ShouldReturnOkWithUpdatedEmployee()
         {
-            var controller = this.CreateControllerWithMultipleEmployees();
+            var controller = this.CreateControllerWithSampleEmployees();
             var idOfEmployeeInDb = this.sampleEmployees[0].Id;
             var nameAndBirthdayPatch = new JsonPatchDocument<Employee>();
             nameAndBirthdayPatch.Replace(emp => emp.FirstName, "New");
@@ -179,7 +192,7 @@ namespace EmployeeManagementTest
             }
         };
 
-        private EmployeeController CreateControllerWithMultipleEmployees()
+        private EmployeeController CreateControllerWithSampleEmployees()
         {
             return new EmployeeController(this.CreateDbContextWithEmployees(this.sampleEmployees));
         }
