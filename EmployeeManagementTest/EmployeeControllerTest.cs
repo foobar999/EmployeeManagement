@@ -16,26 +16,15 @@ namespace EmployeeManagementTest
         [Fact]
         [Trait("Category", "Unit")]
         [ExcludeFromCodeCoverage]
-        public void GetAll_WithMultipleEmployees_ShouldReturnOk()
-        {
-            var controller = this.CreateControllerWithSampleEmployees();
-
-            var actionResult = controller.GetAll();
-
-            Assert.IsType<OkObjectResult>(actionResult.Result);
-        }
-
-        [Fact]
-        [Trait("Category", "Unit")]
-        [ExcludeFromCodeCoverage]
-        public void GetAll_WithSampleEmployeesInContext_ShouldReturnSampleEmployees()
+        public void GetAll_WithMultipleEmployees_ShouldReturnOkWithCorrectEmployees()
         {
             var controller = this.CreateControllerWithSampleEmployees();
             var expectedEmployees = this.sampleEmployees;
 
             var actionResult = controller.GetAll();
-            
-            var actualEmployees = (actionResult.Result as OkObjectResult).Value;
+
+            var objectResult = Assert.IsType<OkObjectResult>(actionResult.Result);
+            var actualEmployees = Assert.IsAssignableFrom<IEnumerable<Employee>>(objectResult.Value);
             Assert.Equal(expectedEmployees, actualEmployees);
         }
 
@@ -195,7 +184,7 @@ namespace EmployeeManagementTest
             var expectedId = this.otherId;
 
             var actionResult = controller.Patch(this.otherId, patch);
-
+            
             this.AssertIsBadRequestWithSerializableError(actionResult);
         }
 
