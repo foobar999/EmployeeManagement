@@ -173,6 +173,21 @@ namespace EmployeeManagementTest
             this.AssertIsOkWithExpectedEmployee(actionResult, expectedEmployee);
         }
 
+        [Fact]
+        [Trait("Category", "Unit")]
+        [ExcludeFromCodeCoverage]
+        public void Patch_WithInvalidState_ShouldReturnBadRequestWithSerializableError()
+        {
+            var controller = this.CreateControllerWithSampleEmployees();
+            controller.ModelState.AddModelError("error", "some error");
+            var patch = new JsonPatchDocument<Employee>();
+            var expectedId = this.otherId;
+
+            var actionResult = controller.Patch(this.otherId, patch);
+
+            this.AssertIsBadRequestWithSerializableError(actionResult);
+        }
+
         private readonly Guid otherId = new Guid("33333333-3333-3333-3333-333333333333");
 
         private readonly List<Employee> sampleEmployees = new List<Employee> {

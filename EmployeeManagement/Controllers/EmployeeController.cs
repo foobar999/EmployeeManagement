@@ -153,6 +153,10 @@ namespace EmployeeManagement.Controllers
         [ProducesResponseType(404, Type = typeof(Guid))]
         public ActionResult<Employee> Patch(Guid id, JsonPatchDocument<Employee> patch)
         {
+            if (!base.ModelState.IsValid)
+            {
+                return base.BadRequest(base.ModelState);
+            }
             var employee = this.context.Employees.Find(id);
             if (employee == null)
             {
