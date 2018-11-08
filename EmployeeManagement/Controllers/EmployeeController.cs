@@ -128,6 +128,7 @@ namespace EmployeeManagement.Controllers
 
         [HttpDelete("{id}")]
         [ProducesResponseType(200, Type = typeof(Employee))]
+        [ProducesResponseType(400, Type = typeof(ModelStateDictionary))]
         [ProducesResponseType(404, Type = typeof(Guid))]
         public ActionResult<Employee> Delete(Guid id)
         {
@@ -150,6 +151,7 @@ namespace EmployeeManagement.Controllers
         // siehe auch https://dotnetcoretutorials.com/2017/11/29/json-patch-asp-net-core/
         [HttpPatch("{id}")]
         [ProducesResponseType(200, Type = typeof(Employee))]
+        [ProducesResponseType(400, Type = typeof(ModelStateDictionary))]
         [ProducesResponseType(404, Type = typeof(Guid))]
         public ActionResult<Employee> Patch(Guid id, JsonPatchDocument<Employee> patch)
         {
