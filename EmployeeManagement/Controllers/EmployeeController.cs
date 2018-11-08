@@ -1,5 +1,6 @@
 ﻿using EmployeeManagement.Models;
 using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.JsonPatch.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
@@ -64,6 +65,7 @@ using System.Linq;
 // TODO eigentlich genau 1 Assert je Test -> auch bei Typchecks?
 // TODO Tests (inkl. Modellvalidierung)+
 // TODO auf ungültige Patches prüfen (auch, ob Modell danach ok)
+// -> Behandlung von DbUpdateException, JsonPatchException?
 // TODO eigentlich NUnit?
 // TODO Swagger
 // TODO Objekt bei [ProducesResponseType(400)] rein?
@@ -164,6 +166,9 @@ namespace EmployeeManagement.Controllers
             {
                 return base.NotFound(id);
             }
+            // TODO sollte hier Exceptions fangen und BadRequests zurückgeben?
+            // oder doch lieber einen Filter nehmen?
+            // wie Testet man das dann?
             patch.ApplyTo(employee);
             this.context.SaveChanges();
 
