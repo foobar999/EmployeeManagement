@@ -62,8 +62,7 @@ using System.Linq;
 // beachte für Swagger und Tests https://docs.microsoft.com/en-us/aspnet/core/web-api/action-return-types?view=aspnetcore-2.1
 
 // TODO Kategorien à la [TestMethod, TestCategory(TestCategories.UnitTest)]?
-// TODO eigentlich genau 1 Assert je Test -> auch bei Typchecks?
-// TODO Tests (inkl. Modellvalidierung)+
+// TODO eigentlich genau 1 Assert je Test -> auch bei Typecast-Checks?
 // TODO auf ungültige Patches prüfen (auch, ob Modell danach ok)
 // -> Behandlung von DbUpdateException, JsonPatchException?
 // TODO eigentlich NUnit?
@@ -72,7 +71,7 @@ using System.Linq;
 // TODO EmployeeContext-Testdaten raus
 // TODO "var" böse?
 // TODO Assert.Equal(employee1,employee2) gut? (erfordert sonst unnötige Equals-Methode)
-// TODO Integrationstest
+// TODO Integrationstest (mit Modellvalidierung)
 
 namespace EmployeeManagement.Controllers
 {
