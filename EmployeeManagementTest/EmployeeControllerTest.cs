@@ -16,15 +16,26 @@ namespace EmployeeManagementTest
         [Fact]
         [Trait("Category", "Unit")]
         [ExcludeFromCodeCoverage]
-        public void GetAll_WithMultipleEmployees_ShouldReturnOkWithCorrectEmployees()
+        public void GetAll_WithMultipleEmployees_ShouldReturnOk()
+        {
+            var controller = this.CreateControllerWithSampleEmployees();
+
+            var actionResult = controller.GetAll();
+
+            Assert.IsType<OkObjectResult>(actionResult.Result);
+        }
+
+        [Fact]
+        [Trait("Category", "Unit")]
+        [ExcludeFromCodeCoverage]
+        public void GetAll_WithSampleEmployeesInContext_ShouldReturnSampleEmployees()
         {
             var controller = this.CreateControllerWithSampleEmployees();
             var expectedEmployees = this.sampleEmployees;
 
             var actionResult = controller.GetAll();
-
-            var objectResult = Assert.IsType<OkObjectResult>(actionResult.Result);
-            var actualEmployees = Assert.IsAssignableFrom<IEnumerable<Employee>>(objectResult.Value);
+            
+            var actualEmployees = (actionResult.Result as OkObjectResult).Value;
             Assert.Equal(expectedEmployees, actualEmployees);
         }
 
