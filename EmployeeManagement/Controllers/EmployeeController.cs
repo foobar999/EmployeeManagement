@@ -106,6 +106,7 @@ namespace EmployeeManagement.Controllers
             {
                 return base.BadRequest(base.ModelState);
             }
+
             var employee = this.context.Employees.Find(id);
             if (employee == null)
             {
